@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
+import { slugify } from '../../lib/slugify';
 
 interface QrCodeModalProps {
   url: string;
@@ -24,12 +25,7 @@ export default function QrCodeModal({ url, guestName, onClose }: QrCodeModalProp
     };
   }, [url]);
 
-  const fileName = `qr-${guestName
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '')}.png`;
+  const fileName = `qr-${slugify(guestName)}.png`;
 
   return (
     <div className="admin-modal-backdrop" onClick={onClose}>

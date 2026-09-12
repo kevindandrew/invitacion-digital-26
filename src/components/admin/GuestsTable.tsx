@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
+import QRCode from 'qrcode';
+import JSZip from 'jszip';
 import { supabase } from '../../lib/supabase';
+import { slugify } from '../../lib/slugify';
 import AddGuestForm, { type NewGuest } from './AddGuestForm';
 import QrCodeModal from './QrCodeModal';
 import SongsModal from './SongsModal';
@@ -33,6 +36,8 @@ export default function GuestsTable() {
   const [qrGuest, setQrGuest] = useState<GuestRow | null>(null);
   const [songsGuestName, setSongsGuestName] = useState<string | null>(null);
   const [songsList, setSongsList] = useState<Song[] | null>(null);
+  const [downloadingAll, setDownloadingAll] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
 
   useEffect(() => {
     let cancelled = false;
@@ -123,6 +128,48 @@ export default function GuestsTable() {
     setSongsList(data ?? []);
   }
 
+  async function handleDownloadAllQrs() {
+    if (!guests || guests.length === 0) return;
+
+    setDownloadingAll(true);
+    setDownloadProgress(0);
+
+    const zip = new JSZip();
+    const usedNames = new Set<string>();
+
+    for (let i = 0; i < guests.length; i++) {
+      const guest = guests[i];
+      const inviteUrl = `${window.location.origin}/invitacion/${guest.token}`;
+      const dataUrl = await QRCode.toDataURL(inviteUrl, {
+        width: 480,
+        margin: 2,
+        color: { dark: '#43371F', light: '#F5EFDD' },
+      });
+
+      const label = [guest.name_1, guest.name_2].filter(Boolean).join(' y ');
+      const base = `qr-${slugify(label) || 'invitado'}`;
+      let fileName = `${base}.png`;
+      let suffix = 2;
+      while (usedNames.has(fileName)) {
+        fileName = `${base}-${suffix}.png`;
+        suffix += 1;
+      }
+      usedNames.add(fileName);
+
+      zip.file(fileName, dataUrl.split(',')[1], { base64: true });
+      setDownloadProgress(i + 1);
+    }
+
+    const blob = await zip.generateAsync({ type: 'blob' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'codigos-qr-invitados.zip';
+    link.click();
+    URL.revokeObjectURL(link.href);
+
+    setDownloadingAll(false);
+  }
+
   async function copyInviteLink(token: string) {
     const url = `${window.location.origin}/invitacion/${token}`;
     await navigator.clipboard.writeText(url);
@@ -171,6 +218,14 @@ export default function GuestsTable() {
         />
         <button type="button" className="admin-login-submit" onClick={() => setShowAddForm((v) => !v)}>
           {showAddForm ? 'Cerrar' : '+ Agregar invitado'}
+        </button>
+        <button
+          type="button"
+          className="admin-copy"
+          onClick={handleDownloadAllQrs}
+          disabled={downloadingAll || guests.length === 0}
+        >
+          {downloadingAll ? `Generando… (${downloadProgress}/${guests.length})` : 'Descargar todos los QR (ZIP)'}
         </button>
       </div>
 
