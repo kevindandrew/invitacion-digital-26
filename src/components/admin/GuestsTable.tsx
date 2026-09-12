@@ -4,6 +4,8 @@ import JSZip from 'jszip';
 import { supabase } from '../../lib/supabase';
 import { slugify } from '../../lib/slugify';
 import AddGuestForm, { type NewGuest } from './AddGuestForm';
+import BulkAddGuestsForm, { type BulkGuest } from './BulkAddGuestsForm';
+import EditGuestForm, { type EditableGuest } from './EditGuestForm';
 import QrCodeModal from './QrCodeModal';
 import SongsModal from './SongsModal';
 
@@ -31,6 +33,8 @@ export default function GuestsTable() {
   const [search, setSearch] = useState('');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
+  const [showBulkForm, setShowBulkForm] = useState(false);
+  const [editingGuest, setEditingGuest] = useState<GuestRow | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
   const [qrGuest, setQrGuest] = useState<GuestRow | null>(null);
@@ -85,6 +89,19 @@ export default function GuestsTable() {
   function handleGuestCreated(guest: NewGuest) {
     setGuests((prev) => [{ ...guest, song_requests: [{ count: 0 }] }, ...(prev ?? [])]);
     setShowAddForm(false);
+  }
+
+  function handleGuestsImported(imported: BulkGuest[]) {
+    const rows = imported.map((guest) => ({ ...guest, song_requests: [{ count: 0 }] }));
+    setGuests((prev) => [...rows, ...(prev ?? [])]);
+    setShowBulkForm(false);
+  }
+
+  function handleGuestUpdated(updated: EditableGuest) {
+    setGuests((prev) =>
+      prev ? prev.map((g) => (g.id === updated.id ? { ...g, ...updated } : g)) : prev
+    );
+    setEditingGuest(null);
   }
 
   async function handleDelete(guest: GuestRow) {
@@ -216,8 +233,25 @@ export default function GuestsTable() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button type="button" className="admin-login-submit" onClick={() => setShowAddForm((v) => !v)}>
+        <button
+          type="button"
+          className="admin-login-submit"
+          onClick={() => {
+            setShowAddForm((v) => !v);
+            setShowBulkForm(false);
+          }}
+        >
           {showAddForm ? 'Cerrar' : '+ Agregar invitado'}
+        </button>
+        <button
+          type="button"
+          className="admin-copy"
+          onClick={() => {
+            setShowBulkForm((v) => !v);
+            setShowAddForm(false);
+          }}
+        >
+          {showBulkForm ? 'Cerrar' : 'Agregar en masa'}
         </button>
         <button
           type="button"
@@ -230,6 +264,9 @@ export default function GuestsTable() {
       </div>
 
       {showAddForm && <AddGuestForm onCreated={handleGuestCreated} onCancel={() => setShowAddForm(false)} />}
+      {showBulkForm && (
+        <BulkAddGuestsForm onImported={handleGuestsImported} onCancel={() => setShowBulkForm(false)} />
+      )}
       {deleteError && <p className="admin-status is-error">{deleteError}</p>}
 
       <div className="admin-table-wrap">
@@ -283,14 +320,19 @@ export default function GuestsTable() {
                   </div>
                 </td>
                 <td>
-                  <button
-                    type="button"
-                    className="admin-delete"
-                    onClick={() => handleDelete(guest)}
-                    disabled={deletingId === guest.id}
-                  >
-                    {deletingId === guest.id ? 'Eliminando…' : 'Eliminar'}
-                  </button>
+                  <div className="admin-invite-actions">
+                    <button type="button" className="admin-copy" onClick={() => setEditingGuest(guest)}>
+                      Editar
+                    </button>
+                    <button
+                      type="button"
+                      className="admin-delete"
+                      onClick={() => handleDelete(guest)}
+                      disabled={deletingId === guest.id}
+                    >
+                      {deletingId === guest.id ? 'Eliminando…' : 'Eliminar'}
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -315,6 +357,10 @@ export default function GuestsTable() {
 
       {songsGuestName && (
         <SongsModal guestName={songsGuestName} songs={songsList} onClose={() => setSongsGuestName(null)} />
+      )}
+
+      {editingGuest && (
+        <EditGuestForm guest={editingGuest} onSaved={handleGuestUpdated} onCancel={() => setEditingGuest(null)} />
       )}
     </>
   );

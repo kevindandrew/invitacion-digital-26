@@ -3,6 +3,8 @@ import Envelope from './Envelope';
 import CountdownTimer from './CountdownTimer';
 import SealDivider from './SealDivider';
 import IvyCorner from './IvyCorner';
+import Schedule from './Schedule';
+import PetalIcon from './PetalIcon';
 import ConfirmationForm from './ConfirmationForm';
 import SongRequestForm from './SongRequestForm';
 import { wedding } from '../../data/wedding';
@@ -146,6 +148,24 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <p className="venue">&ldquo;{wedding.reception.venue}&rdquo;</p>
           <p className="address">{wedding.reception.address}</p>
         </div>
+
+        <SealDivider monogram={wedding.monogram} />
+
+        <Schedule items={wedding.schedule} />
+
+        <div className="venue-notice reveal">
+          <span className="venue-notice-icon">
+            <PetalIcon />
+          </span>
+          <p className="section-title">{wedding.venueNotice.eyebrow}</p>
+          {wedding.venueNotice.messages.map((message) => (
+            <p className="venue-notice-message" key={message}>
+              {message}
+            </p>
+          ))}
+        </div>
+
+        <SealDivider monogram={wedding.monogram} />
 
         <div className="reveal">
           <div className="padrinos-grid">

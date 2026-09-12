@@ -29,15 +29,29 @@ export const wedding = {
     venue: 'Jardines Ashic',
     address: 'Villa Armonia, Av. Juan XXIII 219',
   },
+  schedule: [
+    { icon: 'rings', label: 'Ceremonia civil', time: '17:00' },
+    { icon: 'toast', label: 'Vals y brindis', time: '18:00' },
+    { icon: 'dance', label: 'Baile', time: '19:00' },
+    { icon: 'dinner', label: 'Cena', time: '20:30' },
+    { icon: 'cake', label: 'Torta', time: '19:00' },
+  ],
+  venueNotice: {
+    eyebrow: 'Para cuidar nuestro jardín',
+    messages: [
+      'Nuestro salón es un jardín, así que les pedimos con cariño: si quieren lanzarnos algo a la salida, que sean pétalos de flores. El papel picado, el confeti, el azúcar y la canela son hermosos, pero muy difíciles de limpiar del pasto.',
+      'Además, por reglamento del lugar no se permite el ingreso de cerveza.',
+    ],
+  },
   padrinos: [
     { label: 'Padrinos boda', names: ['Eloy Eduardo Ramos López', 'Lourdes Mancachi Copa'] },
     { label: 'Madrina torta', names: ['Monica Rodríguez Maldonado'] },
   ],
   city: 'La Paz, Bolivia',
   gift: {
-    eyebrow: 'Un detalle, si así lo querés',
+    eyebrow: 'Un detalle, si así lo deseas',
     message:
-      'Tu cariño y tu presencia ya son el regalo más lindo que nos podés dar. Pero si querés ayudarnos a construir nuestro nuevo hogar, con este código podés hacernos llegar tu cariño.',
+      'Tu cariño y tu presencia ya son el regalo más lindo que nos puedes dar. Pero si deseas ayudarnos a construir nuestro nuevo hogar, con este código puedes hacernos llegar tu cariño.',
     qrImage: '/qr-regalo.png',
   },
 } as const;

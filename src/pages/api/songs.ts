@@ -59,7 +59,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   const trimmedGenre = typeof genre === 'string' ? genre.trim() : '';
   if (!trimmedGenre || trimmedGenre.length > 60) {
-    return new Response(JSON.stringify({ error: 'Ingresá un género válido.' }), { status: 400 });
+    return new Response(JSON.stringify({ error: 'Ingresa un género válido.' }), { status: 400 });
   }
 
   const guest = await getGuestByToken(token);

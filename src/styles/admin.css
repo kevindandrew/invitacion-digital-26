@@ -241,6 +241,153 @@
   white-space: nowrap;
 }
 
+.admin-bulk-instructions {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--color-ink);
+  margin: 0;
+}
+.admin-bulk-file-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.admin-bulk-file-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-detail);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  background: transparent;
+  border: 1px solid rgba(169, 131, 46, 0.4);
+  border-radius: 4px;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+.admin-bulk-file-label:hover {
+  background: rgba(169, 131, 46, 0.1);
+}
+.admin-bulk-file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.admin-bulk-file-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--color-ink-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-bulk-file-clear {
+  font-family: var(--font-detail);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a3b1f;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.admin-bulk-file-hint {
+  font-family: var(--font-display);
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+.admin-bulk-or {
+  font-family: var(--font-detail);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  text-align: center;
+  margin: 4px 0;
+}
+
+.admin-bulk-example {
+  font-family: ui-monospace, 'Cascadia Code', Menlo, monospace;
+  font-size: 12px;
+  color: var(--color-ink-soft);
+  background: var(--color-parchment-2);
+  border-radius: 4px;
+  padding: 10px 12px;
+  margin: 0;
+  white-space: pre-wrap;
+}
+.admin-bulk-textarea {
+  font-family: var(--font-display);
+  font-size: 15px;
+  padding: 12px 14px;
+  border: 1px solid rgba(169, 131, 46, 0.4);
+  border-radius: 4px;
+  background: #fffdf7;
+  color: var(--color-ink);
+  resize: vertical;
+}
+.admin-bulk-textarea:focus {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 1px;
+}
+.admin-bulk-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.admin-bulk-summary {
+  font-family: var(--font-detail);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-ink-soft);
+  margin: 0;
+}
+.admin-bulk-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-bulk-list li {
+  display: flex;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--color-ink);
+  padding: 4px 8px;
+  border-radius: 3px;
+  background: var(--color-parchment-2);
+}
+.admin-bulk-list li.has-error {
+  background: rgba(138, 59, 31, 0.1);
+  color: #8a3b1f;
+}
+.admin-bulk-line {
+  font-family: var(--font-detail);
+  font-size: 10.5px;
+  color: var(--color-ink-soft);
+  flex-shrink: 0;
+}
+
+.admin-edit-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .admin-table-wrap {
   overflow-x: auto;
   background: var(--color-parchment);

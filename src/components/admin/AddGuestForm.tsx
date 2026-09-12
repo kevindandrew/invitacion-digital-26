@@ -36,7 +36,7 @@ export default function AddGuestForm({ onCreated, onCancel }: AddGuestFormProps)
       return;
     }
     if (inviteType === 'double' && !trimmedName2) {
-      setError('Ingresá el segundo nombre para una invitación doble.');
+      setError('Ingresa el segundo nombre para una invitación doble.');
       return;
     }
 

@@ -26,12 +26,12 @@ export default function ConfirmationForm({ token, initialConfirmed, deadlineIso 
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        setError(body?.error ?? 'No pudimos guardar tu respuesta. Probá de nuevo.');
+        setError(body?.error ?? 'No pudimos guardar tu respuesta. Inténtalo de nuevo.');
         return;
       }
       setConfirmed(value);
     } catch {
-      setError('No pudimos guardar tu respuesta. Probá de nuevo.');
+      setError('No pudimos guardar tu respuesta. Inténtalo de nuevo.');
     } finally {
       setSubmitting(false);
     }
@@ -39,19 +39,19 @@ export default function ConfirmationForm({ token, initialConfirmed, deadlineIso 
 
   return (
     <div className="rsvp-section">
-      <p className="section-title">Confirmá tu asistencia</p>
+      <p className="section-title">Confirma tu asistencia</p>
 
       {confirmed === true && <p className="rsvp-message">¡Gracias por confirmar! Los esperamos con muchas ganas.</p>}
       {confirmed === false && <p className="rsvp-message">Gracias por avisarnos. ¡Los vamos a extrañar!</p>}
       {confirmed === null && (
         <p className="rsvp-message">
-          {isClosed ? 'No llegamos a recibir tu respuesta a tiempo.' : 'Contanos si podés acompañarnos.'}
+          {isClosed ? 'No llegamos a recibir tu respuesta a tiempo.' : 'Cuéntanos si puedes acompañarnos.'}
         </p>
       )}
 
       {isClosed ? (
         <p className="rsvp-closed">
-          Las confirmaciones cerraron el 19 de septiembre. Si necesitás avisar un cambio, escribinos directamente.
+          Las confirmaciones cerraron el 19 de septiembre. Si necesitas avisar un cambio, escríbenos directamente.
         </p>
       ) : (
         <div className="rsvp-buttons">

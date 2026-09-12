@@ -35,17 +35,17 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
 
     const trimmedTitle = title.trim();
     if (!trimmedTitle) {
-      setError('Escribí el nombre de la canción.');
+      setError('Escribe el nombre de la canción.');
       return;
     }
     if (!genre) {
-      setError('Elegí un género para la canción.');
+      setError('Elige un género para la canción.');
       return;
     }
 
     const finalGenre = genre === OTHER_GENRE ? customGenre.trim() : genre;
     if (!finalGenre) {
-      setError('Escribí el género de la canción.');
+      setError('Escribe el género de la canción.');
       return;
     }
 
@@ -70,7 +70,7 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        setError(body?.error ?? 'No pudimos agregar la canción. Probá de nuevo.');
+        setError(body?.error ?? 'No pudimos agregar la canción. Inténtalo de nuevo.');
         return;
       }
 
@@ -81,7 +81,7 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
       setGenre('');
       setCustomGenre('');
     } catch {
-      setError('No pudimos agregar la canción. Probá de nuevo.');
+      setError('No pudimos agregar la canción. Inténtalo de nuevo.');
     } finally {
       setSubmitting(false);
     }
@@ -89,12 +89,12 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
 
   return (
     <div className="song-section">
-      <p className="section-title">Pedí tu canción</p>
+      <p className="section-title">Pide tu canción</p>
       <p className="rsvp-message">¿Qué no puede faltar en la fiesta?</p>
       <p className="song-limit">
         {atLimit
           ? `Ya agregaste el máximo de ${maxSongs} canciones. ¡Gracias!`
-          : `Podés agregar hasta ${maxSongs} canciones (${remaining} restante${remaining === 1 ? '' : 's'}).`}
+          : `Puedes agregar hasta ${maxSongs} canciones (${remaining} restante${remaining === 1 ? '' : 's'}).`}
       </p>
 
       {!atLimit && (
@@ -125,7 +125,7 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
             disabled={submitting}
           >
             <option value="" disabled>
-              Elegí un género
+              Elige un género
             </option>
             {GENRE_GROUPS.map((group) => (
               <optgroup label={group.label} key={group.label}>
@@ -136,7 +136,7 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
                 ))}
               </optgroup>
             ))}
-            <option value={OTHER_GENRE}>Otro (especificá)</option>
+            <option value={OTHER_GENRE}>Otro (especifica)</option>
           </select>
           {genre === OTHER_GENRE && (
             <input
@@ -145,7 +145,7 @@ export default function SongRequestForm({ token, initialSongs, maxSongs }: SongR
               placeholder="¿Qué género es?"
               value={customGenre}
               onChange={(e) => setCustomGenre(e.target.value)}
-              aria-label="Especificá el género"
+              aria-label="Especifica el género"
               disabled={submitting}
             />
           )}
