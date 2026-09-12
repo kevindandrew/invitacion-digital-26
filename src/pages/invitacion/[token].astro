@@ -1,0 +1,65 @@
+---
+export const prerender = false;
+
+import Layout from '../../layouts/Layout.astro';
+import InvitationExperience from '../../components/invitation/InvitationExperience';
+import { supabaseAdmin } from '../../lib/supabaseAdmin';
+
+const { token } = Astro.params;
+
+const { data: guestRow } = token
+  ? await supabaseAdmin
+      .from('guests')
+      .select('id, token, name_1, name_2, invite_type, confirmed, confirmed_at')
+      .eq('token', token)
+      .single()
+  : { data: null };
+
+let initialSongs: { id: string; song_title: string; artist: string | null; genre: string | null }[] = [];
+if (guestRow) {
+  const { data: songs } = await supabaseAdmin
+    .from('song_requests')
+    .select('id, song_title, artist, genre')
+    .eq('guest_id', guestRow.id)
+    .order('created_at', { ascending: true });
+  initialSongs = songs ?? [];
+}
+
+const guest = guestRow
+  ? {
+      token: guestRow.token,
+      name_1: guestRow.name_1,
+      name_2: guestRow.name_2,
+      invite_type: guestRow.invite_type,
+      confirmed: guestRow.confirmed,
+      confirmed_at: guestRow.confirmed_at,
+    }
+  : null;
+---
+
+<Layout title="Kevin & Belén · Nos casamos">
+  {
+    guest ? (
+      <InvitationExperience client:load guest={guest} initialSongs={initialSongs} />
+    ) : (
+      <div class="not-found">
+        <p>Esta invitación no es válida. Si creés que es un error, contactá a los novios.</p>
+      </div>
+    )
+  }
+</Layout>
+
+<style>
+  .not-found {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 24px;
+    background: #f5efdd;
+    color: #43371f;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 20px;
+  }
+</style>
