@@ -19,18 +19,19 @@ export default function Schedule({ items }: ScheduleProps) {
         <div className="schedule-line reveal" />
 
         {items.map((item, index) => {
-          const side = index % 2 === 0 ? 'right' : 'left';
           const delay = `${index * 0.15}s`;
 
           return (
-            <div className={`schedule-item ${side} reveal`} style={{ transitionDelay: delay }} key={`${item.label}-${item.time}`}>
+            <div className="schedule-item reveal" style={{ transitionDelay: delay }} key={`${item.label}-${item.time}`}>
               <span className="schedule-node" style={{ transitionDelay: delay }} />
               <div className="schedule-content">
                 <span className="schedule-icon">
                   <ScheduleIcon name={item.icon} />
                 </span>
-                <span className="schedule-label">{item.label}</span>
-                <span className="schedule-time">{item.time}</span>
+                <div className="schedule-copy">
+                  <span className="schedule-label">{item.label}</span>
+                  <span className="schedule-time">{item.time}</span>
+                </div>
               </div>
             </div>
           );

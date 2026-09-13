@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import InvitationExperience from '../components/invitation/InvitationExperience';
+
+const previewGuest = {
+  token: 'preview-token',
+  name_1: 'María',
+  name_2: 'José',
+  invite_type: 'double' as const,
+  confirmed: null,
+  confirmed_at: null,
+};
+---
+
+<Layout title="Vista previa · Kevin & Belén">
+  <InvitationExperience client:load guest={previewGuest} initialSongs={[]} />
+</Layout>

@@ -38,7 +38,7 @@ export default function Envelope({ monogram, guestName, opened, onOpen }: Envelo
         aria-label={opened ? 'Invitación abierta' : 'Abrir invitación'}
         disabled={opened}
       >
-        {monogram}
+        <img src="/sellokyb.png" alt="Sello K y B" />
       </button>
     </div>
   );
