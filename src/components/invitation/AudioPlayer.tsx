@@ -1,8 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 interface AudioTrack {
   title: string;
   src: string;
+}
+
+export interface AudioPlayerHandle {
+  play: () => void;
 }
 
 const musicModules = import.meta.glob<unknown>('../../assets/music/*.{mp3,MP3}', { eager: true });
@@ -28,11 +32,19 @@ const tracks: AudioTrack[] = Object.keys(musicModules)
   .map((path) => ({ title: titleFromPath(path), src: resolveSrc(musicModules[path]) }))
   .filter((track) => track.src);
 
-export default function AudioPlayer() {
+const AudioPlayer = forwardRef<AudioPlayerHandle>(function AudioPlayer(_props, ref) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
+
+  useImperativeHandle(ref, () => ({
+    play: () => {
+      const audio = audioRef.current;
+      if (!audio) return;
+      void audio.play().catch(() => setPlaying(false));
+    },
+  }), []);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -76,7 +88,7 @@ export default function AudioPlayer() {
 
   return (
     <aside className="audio-player" aria-label="Reproductor de música">
-      <audio ref={audioRef} src={tracks[trackIndex]?.src} preload="none" />
+      <audio ref={audioRef} src={tracks[trackIndex]?.src} preload="auto" />
       <span className="audio-copy"><span>soundtrack {trackIndex + 1}/{tracks.length}</span><strong>{tracks[trackIndex]?.title}</strong></span>
       <button type="button" className="audio-control" onClick={togglePlayback} aria-label={playing ? 'Pausar música' : 'Reproducir música'}>
         {playing ? 'Ⅱ' : '▶'}
@@ -87,4 +99,6 @@ export default function AudioPlayer() {
       <button type="button" className="audio-next" onClick={() => setTrackIndex((current) => (current + 1) % tracks.length)} aria-label="Siguiente canción">›</button>
     </aside>
   );
-}
+});
+
+export default AudioPlayer;

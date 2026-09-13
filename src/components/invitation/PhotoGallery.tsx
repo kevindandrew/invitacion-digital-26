@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type TransitionEvent } from 'react';
 
 const imageModules = import.meta.glob<unknown>(
   '../../assets/gallery/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
@@ -71,8 +71,8 @@ function GalleryFrame({ rotate, dwell, initialIndex }: GalleryFrameProps) {
     return () => window.clearTimeout(timeoutId);
   }, [photoIndex, dwell]);
 
-  const handleTransitionEnd = () => {
-    if (!fading) return;
+  const handleTransitionEnd = (event: TransitionEvent<HTMLElement>) => {
+    if (event.target !== event.currentTarget || event.propertyName !== 'opacity' || !fading) return;
     const nextIndex = nextRandomIndex(photoIndexRef.current, photos.length);
     const preload = new window.Image();
     preload.onload = () => {
@@ -86,14 +86,12 @@ function GalleryFrame({ rotate, dwell, initialIndex }: GalleryFrameProps) {
   const photo = photos[photoIndex % photos.length];
 
   return (
-    <figure className="gallery-frame" style={{ '--frame-rotate': rotate } as unknown as CSSProperties}>
-      <img
-        src={photo.src}
-        alt={photo.alt}
-        loading="lazy"
-        className={fading ? 'is-fading' : ''}
-        onTransitionEnd={handleTransitionEnd}
-      />
+    <figure
+      className={`gallery-frame ${fading ? 'is-fading' : ''}`}
+      style={{ '--frame-rotate': rotate } as unknown as CSSProperties}
+      onTransitionEnd={handleTransitionEnd}
+    >
+      <img src={photo.src} alt={photo.alt} loading="lazy" />
       <span className="gallery-tape" aria-hidden="true" />
     </figure>
   );

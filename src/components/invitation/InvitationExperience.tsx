@@ -9,9 +9,10 @@ import ConfirmationForm from './ConfirmationForm';
 import SongRequestForm from './SongRequestForm';
 import PhotoGallery from './PhotoGallery';
 import WeddingCalendar from './WeddingCalendar';
-import AudioPlayer from './AudioPlayer';
+import AudioPlayer, { type AudioPlayerHandle } from './AudioPlayer';
 import AnimatedText from './AnimatedText';
 import FlowerRain from './FlowerRain';
+import GoldLeafFrame from './GoldLeafFrame';
 import { wedding } from '../../data/wedding';
 import '../../styles/invitation.css';
 
@@ -38,6 +39,12 @@ interface InvitationExperienceProps {
 export default function InvitationExperience({ guest, initialSongs }: InvitationExperienceProps) {
   const [opened, setOpened] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const audioPlayerRef = useRef<AudioPlayerHandle>(null);
+
+  const handleOpen = () => {
+    setOpened(true);
+    audioPlayerRef.current?.play();
+  };
 
   const guestName =
     guest.invite_type === 'double' && guest.name_2 ? `${guest.name_1} y ${guest.name_2}` : guest.name_1;
@@ -98,13 +105,13 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           monogram={wedding.monogram}
           guestName={guestName}
           opened={opened}
-          onOpen={() => setOpened(true)}
+          onOpen={handleOpen}
         />
         <p className={`hero-hint ${opened ? 'is-hidden' : ''}`}>Toca el sello para abrir tu invitación</p>
       </section>
 
       <div ref={contentRef} className={`content ${opened ? 'is-open' : ''}`}>
-        <AudioPlayer />
+        <AudioPlayer ref={audioPlayerRef} />
         <div className="names reveal">
           <AnimatedText className="name">{wedding.groom}</AnimatedText>
           <span className="name-ampersand">&amp;</span>
@@ -166,8 +173,15 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <CountdownTimer targetIso={wedding.date.iso} />
         </div>
 
-        <div className="section-band section-band--green">
-          <WeddingCalendar year={wedding.date.year} month={wedding.date.month} day={wedding.date.day} />
+        <div className="section-band section-band--green calendar-section">
+          <GoldLeafFrame />
+          <div className="calendar-feature">
+            <div className="calendar-note reveal">
+              <span className="calendar-note-icon"><PetalIcon /></span>
+              <p className="calendar-note-text">{wedding.calendarNote}</p>
+            </div>
+            <WeddingCalendar year={wedding.date.year} month={wedding.date.month} day={wedding.date.day} />
+          </div>
         </div>
 
         <div className="pass-card reveal section-band section-band--paper">
