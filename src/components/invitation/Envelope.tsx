@@ -9,7 +9,11 @@ export default function Envelope({ monogram, guestName, opened, onOpen }: Envelo
   return (
     <div className={`envelope ${opened ? 'is-open' : ''}`}>
       <div className="envelope-card">
-        <span className="envelope-card-monogram">{monogram}</span>
+        <span className="envelope-card-greeting">
+          Hola,
+          <br />
+          estás invitado&hellip;
+        </span>
         <span className="envelope-card-rule" />
         {guestName && (
           <span className="envelope-card-guest">
@@ -17,7 +21,6 @@ export default function Envelope({ monogram, guestName, opened, onOpen }: Envelo
             <span className="envelope-card-guest-name">{guestName}</span>
           </span>
         )}
-        <span className="envelope-card-hint">Toca el sello para abrir</span>
       </div>
 
       <div className="envelope-flap envelope-flap--top" />

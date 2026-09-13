@@ -86,7 +86,7 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
       <div ref={contentRef} className={`content ${opened ? 'is-open' : ''}`}>
         <div className="names reveal">
           <span className="name">{wedding.groom}</span>
-          <span className="monogram-badge">{wedding.monogram}</span>
+          <span className="name-ampersand">&amp;</span>
           <span className="name">{wedding.bride}</span>
         </div>
 
@@ -123,7 +123,7 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
         <p className="invitation-line reveal">{wedding.invitationLine}</p>
 
-        <div className="reveal">
+        <div className="date-card reveal">
           <div className="date-block">
             <div className="date-side">
               <span>{wedding.date.year}</span>
@@ -139,14 +139,6 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
             </div>
           </div>
           <CountdownTimer targetIso={wedding.date.iso} />
-        </div>
-
-        <SealDivider monogram={wedding.monogram} />
-
-        <div className="reception reveal">
-          <p className="section-title">Recepción</p>
-          <p className="venue">&ldquo;{wedding.reception.venue}&rdquo;</p>
-          <p className="address">{wedding.reception.address}</p>
         </div>
 
         <SealDivider monogram={wedding.monogram} />
@@ -167,18 +159,31 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
         <SealDivider monogram={wedding.monogram} />
 
-        <div className="reveal">
-          <div className="padrinos-grid">
-            {wedding.padrinos.map((group) => (
-              <div key={group.label}>
-                <p className="padrino-label">{group.label}</p>
-                {group.names.map((name) => (
-                  <p className="padrino-name" key={name}>
-                    {name}
-                  </p>
-                ))}
-              </div>
-            ))}
+        <div className="details-card reveal">
+          <p className="section-title">Detalles de la recepción</p>
+          <div className="details-grid">
+            <div className="details-col">
+              <p className="details-label">Recepción</p>
+              <p className="venue">&ldquo;{wedding.reception.venue}&rdquo;</p>
+              <p className="address">{wedding.reception.address}</p>
+            </div>
+            <div className="details-col">
+              <p className="details-label">Padrinos</p>
+              {wedding.padrinos.map((group) => (
+                <div className="padrino-group" key={group.label}>
+                  <p className="padrino-label">{group.label}</p>
+                  {group.names.map((name) => (
+                    <p className="padrino-name" key={name}>
+                      {name}
+                    </p>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="details-dresscode">
+            <p className="details-label">Código de vestimenta</p>
+            <p className="details-value">{wedding.dressCode}</p>
           </div>
         </div>
 
@@ -208,7 +213,11 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <img src={wedding.gift.qrImage} alt="Código QR para enviar un regalo en dinero" className="gift-qr" />
         </div>
 
-        <p className="city reveal">{wedding.city}</p>
+        <div className="content-footer">
+          <IvyCorner variant="muted" />
+          <p className="city reveal">{wedding.city}</p>
+          <IvyCorner variant="muted" flip />
+        </div>
       </div>
     </div>
   );

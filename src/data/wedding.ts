@@ -47,6 +47,7 @@ export const wedding = {
     { label: 'Padrinos boda', names: ['Eloy Eduardo Ramos López', 'Lourdes Mancachi Copa'] },
     { label: 'Madrina torta', names: ['Monica Rodríguez Maldonado'] },
   ],
+  dressCode: 'Formal / Elegante',
   city: 'La Paz, Bolivia',
   gift: {
     eyebrow: 'Un detalle, si así lo deseas',
