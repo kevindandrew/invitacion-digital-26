@@ -7,6 +7,11 @@ import Schedule from './Schedule';
 import PetalIcon from './PetalIcon';
 import ConfirmationForm from './ConfirmationForm';
 import SongRequestForm from './SongRequestForm';
+import PhotoGallery from './PhotoGallery';
+import WeddingCalendar from './WeddingCalendar';
+import AudioPlayer from './AudioPlayer';
+import AnimatedText from './AnimatedText';
+import FlowerRain from './FlowerRain';
 import { wedding } from '../../data/wedding';
 import '../../styles/invitation.css';
 
@@ -36,6 +41,19 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
   const guestName =
     guest.invite_type === 'double' && guest.name_2 ? `${guest.name_1} y ${guest.name_2}` : guest.name_1;
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    `${wedding.reception.venue}, ${wedding.reception.address}`,
+  )}`;
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('invitation-locked', !opened);
+    document.body.classList.toggle('invitation-locked', !opened);
+
+    return () => {
+      document.documentElement.classList.remove('invitation-locked');
+      document.body.classList.remove('invitation-locked');
+    };
+  }, [opened]);
 
   useEffect(() => {
     if (!opened) return;
@@ -67,9 +85,11 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
   return (
     <div className="invitation-page">
+      <FlowerRain />
       <section className="envelope-hero">
         <IvyCorner />
         <IvyCorner flip />
+        <div className="hero-monogram" aria-label={`Monograma ${wedding.monogram}`}>{wedding.monogram}</div>
         <div className={`hero-guest ${opened ? 'is-hidden' : ''}`}>
           <span className="hero-guest-label">Invitación para</span>
           <span className="hero-guest-name">{guestName}</span>
@@ -84,10 +104,11 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
       </section>
 
       <div ref={contentRef} className={`content ${opened ? 'is-open' : ''}`}>
+        <AudioPlayer />
         <div className="names reveal">
-          <span className="name">{wedding.groom}</span>
+          <AnimatedText className="name">{wedding.groom}</AnimatedText>
           <span className="name-ampersand">&amp;</span>
-          <span className="name">{wedding.bride}</span>
+          <AnimatedText className="name">{wedding.bride}</AnimatedText>
         </div>
 
         <div className="guest-welcome reveal">
@@ -104,16 +125,19 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <p className="quote-footer">{wedding.quoteFooter}</p>
         </div>
 
-        <p className="announcement reveal">{wedding.announcement}</p>
+        <p className="announcement reveal"><AnimatedText>{wedding.announcement}</AnimatedText></p>
+
+        <PhotoGallery />
 
         <SealDivider monogram={wedding.monogram} />
 
         <div className="reveal">
           <p className="section-title">{wedding.parents.title}</p>
           <div className="parents-grid">
-            {wedding.parents.columns.map((column) => (
-              <div key={column.join('-')}>
-                {column.map((name) => (
+            {wedding.parents.groups.map((group) => (
+              <div className="parent-group" key={group.title}>
+                <span className="parent-group-title">{group.title}</span>
+                {group.names.map((name) => (
                   <span key={name}>{name}</span>
                 ))}
               </div>
@@ -123,7 +147,8 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
         <p className="invitation-line reveal">{wedding.invitationLine}</p>
 
-        <div className="date-card reveal">
+        <div className="date-card reveal section-band section-band--paper">
+          <p className="section-title">Nuestro día</p>
           <div className="date-block">
             <div className="date-side">
               <span>{wedding.date.year}</span>
@@ -141,9 +166,21 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <CountdownTimer targetIso={wedding.date.iso} />
         </div>
 
+        <div className="section-band section-band--green">
+          <WeddingCalendar year={wedding.date.year} month={wedding.date.month} day={wedding.date.day} />
+        </div>
+
+        <div className="pass-card reveal section-band section-band--paper">
+          <span className="pass-card-label">Pases reservados</span>
+          <strong>{guest.invite_type === 'double' ? '02' : '01'}</strong>
+          <span>{guest.invite_type === 'double' ? 'para compartir este día' : 'para ti'}</span>
+        </div>
+
         <SealDivider monogram={wedding.monogram} />
 
-        <Schedule items={wedding.schedule} />
+        <div className="section-band section-band--green schedule-band">
+          <Schedule items={wedding.schedule} />
+        </div>
 
         <div className="venue-notice reveal">
           <span className="venue-notice-icon">
@@ -159,13 +196,21 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
         <SealDivider monogram={wedding.monogram} />
 
-        <div className="details-card reveal">
+        <div className="details-card reveal section-band section-band--paper">
           <p className="section-title">Detalles de la recepción</p>
           <div className="details-grid">
             <div className="details-col">
               <p className="details-label">Recepción</p>
               <p className="venue">&ldquo;{wedding.reception.venue}&rdquo;</p>
               <p className="address">{wedding.reception.address}</p>
+              <a className="maps-link" href={mapsUrl} target="_blank" rel="noreferrer">Abrir en Google Maps <span aria-hidden="true">↗</span></a>
+              <iframe
+                className="maps-frame"
+                title={`Mapa de ${wedding.reception.venue}`}
+                src={`https://www.google.com/maps?q=${encodeURIComponent(`${wedding.reception.venue}, ${wedding.reception.address}`)}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
             </div>
             <div className="details-col">
               <p className="details-label">Padrinos</p>
@@ -189,7 +234,7 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
 
         <SealDivider monogram={wedding.monogram} />
 
-        <div className="reveal">
+        <div className="reveal section-band section-band--green form-band">
           <ConfirmationForm
             token={guest.token}
             initialConfirmed={guest.confirmed}
@@ -197,7 +242,7 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           />
         </div>
 
-        <div className="reveal">
+        <div className="reveal section-band section-band--paper form-band">
           <SongRequestForm
             token={guest.token}
             initialSongs={initialSongs}
