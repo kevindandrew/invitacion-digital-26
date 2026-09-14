@@ -1,7 +1,7 @@
 export const wedding = {
   monogram: "K&B",
   groom: "Kevin",
-  bride: "Belén",
+  bride: "Belen",
   quote: ["Te daré la mitad de mi vida,", "si tú me das la mitad de la tuya."],
   quoteFooter: "Un anillo para unirnos para siempre.",
   announcement: "¡Nos casamos!",
@@ -10,16 +10,17 @@ export const wedding = {
     groups: [
       {
         title: "Padres de la novia",
-        names: ["Ana María Ramos López", "Eddy Martín Segales Salvador"],
+        names: ["Eddy Martín Segales Salvador", "Ana María Ramos López"],
       },
       {
         title: "Padres del novio",
-        names: ["Guadalupe Calderón Cuellar", "Ramiro Rodríguez Maldonado"],
+        names: ["Ramiro Rodríguez Maldonado", "Guadalupe Calderón Cuellar"],
       },
     ],
   },
   invitationLine: "Tenemos la alegría de invitarles a nuestra unión",
-  calendarNote: "Guardá este día en tu corazón: será el comienzo de nuestra historia juntos.",
+  calendarNote:
+    "Guardá este día en tu corazón: será el comienzo de nuestra historia juntos.",
   rsvpDeadlineIso: "2026-09-19T23:59:59-04:00",
   date: {
     iso: "2026-09-26T16:00:00-04:00",
@@ -44,7 +45,6 @@ export const wedding = {
     eyebrow: "Para cuidar nuestro jardín",
     messages: [
       "Nuestro salón es un jardín, así que les pedimos con cariño: si quieren lanzarnos algo a la salida, que sean pétalos de flores. El papel picado, el confeti, el azúcar y la canela son hermosos, pero muy difíciles de limpiar del pasto.",
-      "Además, por reglamento del lugar no se permite el ingreso de cerveza.",
     ],
   },
   padrinos: [

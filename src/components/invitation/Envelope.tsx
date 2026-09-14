@@ -1,26 +1,24 @@
 interface EnvelopeProps {
   monogram: string;
   guestName?: string;
+  isDouble?: boolean;
   opened: boolean;
   onOpen: () => void;
 }
 
-export default function Envelope({ monogram, guestName, opened, onOpen }: EnvelopeProps) {
+export default function Envelope({ monogram, guestName, isDouble, opened, onOpen }: EnvelopeProps) {
   return (
     <div className={`envelope ${opened ? 'is-open' : ''}`}>
       <div className="envelope-card">
-        <span className="envelope-card-greeting">
-          Hola,
-          <br />
-          estás invitado&hellip;
-        </span>
-        <span className="envelope-card-rule" />
         {guestName && (
-          <span className="envelope-card-guest">
-            <span className="envelope-card-guest-label">Invitación para</span>
-            <span className="envelope-card-guest-name">{guestName}</span>
-          </span>
+          <span className="envelope-card-greeting">Hola, {guestName}&#33;</span>
         )}
+        <span className="envelope-card-rule" />
+        <span className="envelope-card-guest">
+          <span className="envelope-card-guest-name">
+            Esta es una invitación especial para {isDouble ? 'ustedes' : 'ti'}.
+          </span>
+        </span>
       </div>
 
       <div className="envelope-flap envelope-flap--top" />
