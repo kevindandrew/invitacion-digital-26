@@ -211,7 +211,7 @@
       transparent 60%
     ),
     linear-gradient(160deg, rgba(15, 20, 8, 0.04), rgba(15, 20, 8, 0.28) 100%),
-    url("/hoja.png");
+    url("/hoja.webp");
   transition:
     transform 0.95s cubic-bezier(0.61, 0.03, 0.35, 1),
     opacity 0.95s ease;
