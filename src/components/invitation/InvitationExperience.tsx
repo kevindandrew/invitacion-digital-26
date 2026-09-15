@@ -8,6 +8,7 @@ import PetalIcon from './PetalIcon';
 import ConfirmationForm from './ConfirmationForm';
 import SongRequestForm from './SongRequestForm';
 import PhotoGallery from './PhotoGallery';
+import GiftCard from './GiftCard';
 import WeddingCalendar from './WeddingCalendar';
 import AudioPlayer, { type AudioPlayerHandle } from './AudioPlayer';
 import AnimatedText from './AnimatedText';
@@ -270,7 +271,7 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
         <div className="gift-section reveal">
           <p className="section-title">{wedding.gift.eyebrow}</p>
           <p className="rsvp-message">{wedding.gift.message}</p>
-          <img src={wedding.gift.qrImage} alt="Código QR para enviar un regalo en dinero" className="gift-qr" />
+          <GiftCard cardImage={wedding.gift.cardImage} qrImage={wedding.gift.qrImage} bank={wedding.gift.bank} />
         </div>
 
         <div className="content-footer">

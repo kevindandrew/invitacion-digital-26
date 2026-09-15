@@ -26,6 +26,8 @@ export default function Envelope({ monogram, guestName, isDouble, opened, onOpen
       <div className="envelope-flap envelope-flap--bottom" />
       <div className="envelope-flap envelope-flap--left" />
 
+      <img src="/flores.png" alt="" aria-hidden="true" className="envelope-blossom" />
+
       <div className="envelope-twine" />
 
       <button

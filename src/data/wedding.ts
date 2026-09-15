@@ -57,10 +57,15 @@ export const wedding = {
   dressCode: "Formal / Elegante",
   city: "La Paz, Bolivia",
   gift: {
-    eyebrow: "Un detalle, si así lo deseas",
+    eyebrow: "Mesa de Regalos",
     message:
-      "Tu cariño y tu presencia ya son el regalo más lindo que nos puedes dar. Pero si deseas ayudarnos a construir nuestro nuevo hogar, con este código puedes hacernos llegar tu cariño.",
+      "El mejor regalo es tu compañía, cualquier detalle será recibido con mucho cariño.",
+    cardImage: "/tarjeta-01.png",
     qrImage: "/qr-regalo.png",
+    bank: {
+      name: "BNB",
+      account: "1502504874",
+    },
   },
 } as const;
 
