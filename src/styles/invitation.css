@@ -847,14 +847,6 @@
   color: var(--color-parchment);
   border-color: var(--color-ink);
 }
-.rsvp-closed {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-style: italic;
-  color: var(--color-ink-soft);
-  max-width: 340px;
-  margin: 0 auto;
-}
 .rsvp-error {
   font-family: var(--font-display);
   font-size: 15px;

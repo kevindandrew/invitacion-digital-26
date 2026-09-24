@@ -21,7 +21,6 @@ export const wedding = {
   invitationLine: "Tenemos la alegría de invitarles a nuestra unión",
   calendarNote:
     "Guardá este día en tu corazón: será el comienzo de nuestra historia juntos.",
-  rsvpDeadlineIso: "2026-09-19T23:59:59-04:00",
   date: {
     iso: "2026-09-26T16:00:00-04:00",
     year: "2026",

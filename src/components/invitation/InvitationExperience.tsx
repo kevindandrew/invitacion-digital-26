@@ -254,7 +254,6 @@ export default function InvitationExperience({ guest, initialSongs }: Invitation
           <ConfirmationForm
             token={guest.token}
             initialConfirmed={guest.confirmed}
-            deadlineIso={wedding.rsvpDeadlineIso}
           />
         </div>
 

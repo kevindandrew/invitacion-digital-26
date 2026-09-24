@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { supabaseAdmin } from '../../lib/supabaseAdmin';
-import { wedding } from '../../data/wedding';
 
 export const prerender = false;
 
@@ -16,10 +15,6 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (typeof token !== 'string' || typeof confirmed !== 'boolean') {
     return new Response(JSON.stringify({ error: 'Datos inválidos.' }), { status: 400 });
-  }
-
-  if (Date.now() > new Date(wedding.rsvpDeadlineIso).getTime()) {
-    return new Response(JSON.stringify({ error: 'Las confirmaciones ya cerraron.' }), { status: 400 });
   }
 
   const { data, error } = await supabaseAdmin
